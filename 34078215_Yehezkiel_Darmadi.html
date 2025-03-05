@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+
+<!--Reference: https://www.developer.com/design/creating-a-tree-diagram-with-d3-js/ -->
+<!--Reference: https://observablehq.com/@triptych/import-javascript-class-from-github-gist -->
+<!--Reference: https://colorbrewer2.org/ -->
+<!-- This is a template for FIT5147 Programming Exercise 3 S2 2024 using D3 v7(https://d3js.org) -->
+
+<html>
+  <head>
+    <title>FIT5147 PE3</title>
+    <meta charset="utf-8" />
+    <style>
+      #content {
+        border: 2px solid;
+        width: 1450px;
+        height: 800px;
+        text-align: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+
+      #side-bar {
+        float: left;
+        vertical-align: top;
+        background-color: lightgrey;
+        box-sizing: border-box;
+        width: 300px;
+        height: 800px;
+        padding: 30px 30px 40px 30px;
+        text-align: left;
+        font-size: 14px;
+        font-family: sans-serif;
+      }
+
+      #data-source {
+        position: absolute;
+        bottom: 0px;
+        margin-right: 0px;
+        padding: 10px;
+        border-top: 2px dotted grey;
+        max-width: 240px;
+        overflow-wrap: break-word;
+        font-size: x-small;
+      }
+
+      #canvas {
+        margin-left: 300px;
+      }
+
+      .legend-title {
+        font: 10px sans-serif;
+        font-weight: bold;
+      }
+
+      .legend-label {
+        font: 10px sans-serif;
+      }
+
+      .link {
+        fill: none;
+        stroke: #cccccc;
+        stroke-width: 1px;
+      }
+
+      .leaf_node {
+        stroke-width: 2px;
+        stroke: grey;
+        fill: white;
+      }
+
+      .internal_node {
+        stroke-width: 3px;
+        stroke: grey;
+        fill: white;
+      }
+
+      /*
+			USE this css rule for the node labels that you will add
+			*/
+      .label {
+        font: 12px sans-serif;
+        fill: rgb(0, 0, 0);
+        user-select: none;
+        pointer-events: none;
+        text-align: center;
+      }
+
+      /*
+			USE these two css rules for the tooltip that you will add
+			*/
+      #tooltip-container {
+        position: absolute;
+        background-color: white;
+        padding: 0px 15px 0px 15px;
+        display: none;
+        border: 1px solid #555;
+      }
+
+      #tooltip-text {
+        font: 16px sans-serif;
+        text-align: left;
+      }
+
+      /*
+			USE these four css rules for the highlighting that you will add
+			*/
+      .node-highlighted {
+        stroke: orangered;
+        fill: white;
+        stroke-width: 3;
+      }
+
+      .timeline-bar-highlighted {
+        stroke-width: 13;
+      }
+
+      .timeline-bar-transparent {
+        stroke-opacity: 0.3;
+        fill-opacity: 0.3;
+      }
+
+      .link-highlighted {
+        stroke: orangered;
+        stroke-width: 2px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="side-bar">
+        <h1>Melbourne Developments</h1>
+        <p>
+          The tree diagram and connecting timeline present building developments
+          completed in the City of Melbourne between 2014-2023, with floor space
+          intended for retail, offices and education.
+        </p>
+        <p>
+          The visualisation shows that most development was in the CDB and
+          Docklands. Office space had the largest amount of development,
+          particularly in the CBD and Docklands. In 2016 and 2018 there was no
+          office development in the CBD, but construction still occurred
+          elsewhere, particularly Docklands.
+        </p>
+        <p>
+          Other than CBD and Docklands, retail space development was common in
+          Southbank, West Melbourne and Carlton, with 2021 being a busy year
+          despite the early pandemic. Education floor space was mainly added in
+          Parkville up to 2018, but then shifted to projects in the surrounding
+          suburbs and Docklands.
+        </p>
+        <p>
+          Hovering over the intersections in the tree and timeline will provide
+          additional information about the floor type and numbers of
+          developments each year.
+        </p>
+        <div id="data-source">
+          Data source:<a
+            href="https://data.melbourne.vic.gov.au/explore/dataset/development-activity-monitor/export/?disjunctive.status&disjunctive.clue_small_area&disjunctive.clue_block"
+          >
+            Development Activity Monitor</a
+          >
+          data from the City of Melbourne, updated July 2024. The visual shows
+          all completed developments with floor space provided for office,
+          retail and education from 2014 and 2023 are shown. All suburbs shown,
+          except data for Residential and Industrial West Melbourne are combined
+          together and South Yarra was removed due to too few developments.
+        </div>
+      </div>
+      <div id="canvas"></div>
+
+      <div id="tooltip-container">
+        <p id="tooltip-text">Tooltip text goes here.</p>
+      </div>
+
+      <script src="https://d3js.org/d3.v7.min.js"></script>
+
+      <script type="module">
+        /*
+				NOTICE: "#region" and "#endregion" provide existing code and variables that will be used in the visualisation. Avoid modifying unless absolutely necessary!
+				*/
+
+        //// #region: load external resources
+        // load the legend function (ref:  https://github.com/sgeoviz)
+        const functionURL =
+          "https://gist.githubusercontent.com/sgeoviz/3cc303e27c8d4544bab7f9ebbc1b045a/raw/95229e7e776a1c4e851e9fabe73630a233f1d7de/colour_legend.js";
+        const response = await fetch(functionURL);
+        const blobObject = new Blob([await response.text()], {
+          type: "text/javascript",
+        });
+        const legend = (await import(URL.createObjectURL(blobObject))).legend;
+
+        // load the development hierarchy data
+        const hierarchyDataPath =
+          "https://gist.githubusercontent.com/sgeoviz/ca236a9dec45acd606c2619134ec7935/raw/371061e874813b3bfc721404c4e926fadbf8b3f8/PE3_developments_hierarchy.json";
+        const treeData = await d3.json(hierarchyDataPath);
+        //// #endregion
+
+        //// #region: define a global variable to store the data with global access
+        let dataPointer = null;
+        //// #endregion
+
+        //// #region: define basic variables of the visualisation
+        // set the dimensions and margins of the diagram
+        const margin = { top: 20, right: 50, bottom: 40, left: 50 },
+          width = 1150 - margin.left - margin.right,
+          height = 800 - margin.top - margin.bottom;
+
+        // set the interval and length of the timeline
+        const interval = 35,
+          length = 10 * interval;
+
+        // set the radius of nodes
+        const r = 10;
+
+        // append a svg object to the body of the page
+        const svg = d3
+            .select("#canvas")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom),
+          // append a group to the svg object to hold all the visualisation elements
+          svgGroup = svg
+            .append("g")
+            .attr(
+              "transform",
+              "translate(" + margin.left + "," + margin.top + ")"
+            );
+        //// #endregion
+
+        //// #region: define the timeline
+        // create a scale for the timeline
+        const Years = [
+          "",
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+        ];
+        const timelineScale = d3.scalePoint().domain(Years).range([0, length]);
+
+        // add the scale to an axis
+        const x_axis = d3
+          .axisBottom()
+          .scale(timelineScale)
+          .tickSizeInner(-height);
+
+        // append a group element to the svg group and insert the axis object
+        svgGroup
+          .append("g")
+          .call(x_axis)
+          .call(customiseAxis)
+          .attr(
+            "transform",
+            "translate(" + (width - length + r) + "," + height + ")"
+          );
+
+        // customise the axis
+        function customiseAxis(selection) {
+          selection
+            .selectAll(".tick text")
+            .attr("transform", "translate(" + -interval / 2 + ",0)")
+            .attr("fill", "grey");
+          selection
+            .selectAll(".tick line")
+            .attr("stroke-dasharray", "4,4")
+            .attr("stroke", "#ccc");
+          selection.selectAll(".domain").attr("stroke", "#ccc");
+        }
+        //// #endregion
+
+        //// #region: process the hierarchy data for visualisation
+        // declare a tree layout and assign the size
+        const treemap = d3.tree().size([height, width - length]);
+
+        //  assign the data to a hierarchy using parent-child relationships
+        let root = d3.hierarchy(treeData, (d) => d.children);
+
+        // map the hierarchy data to the tree layout
+        root = treemap(root);
+
+        // add the links between the nodes
+        const link = svgGroup
+          .selectAll(".link")
+          .data(root.descendants().slice(1))
+          .join("path")
+          .attr("class", "link")
+          .attr(
+            "d",
+            (d) =>
+              "M" +
+              d.y +
+              "," +
+              d.x +
+              "C" +
+              (d.y + d.parent.y) / 2 +
+              "," +
+              d.x +
+              " " +
+              (d.y + d.parent.y) / 2 +
+              "," +
+              d.parent.x +
+              " " +
+              d.parent.y +
+              "," +
+              d.parent.x
+          );
+
+        // add each node as a group and label elements that you will add below
+        const node = svgGroup
+          .selectAll(".node")
+          .data(root.descendants())
+          .join("g")
+          .attr("transform", (d) => "translate(" + d.y + "," + d.x + ")");
+        //// #endregion
+
+        /*
+				ADD YOUR CODE HERE FOLLOWING THE DESCRIPTION
+				*/
+        // Add a shape to the node (Task 1)
+        // You can also use internal_node and leaf_node for your design
+        // Hover the mouse on the leaf nodes to show the detail asked for in the tooltip (Task 5)
+        // You can use the css rule of tooltip defined in the style sheet above
+        // Hover the mouse on the parent nodes to show the number of their children on the tooltip (Task 5)
+        // Highlight the node with appropriate styling when mouse hovers (Task 6)
+        // You can use the css rule of highlighting defined in the style sheet above
+        node
+          .append("circle")
+          .attr("r", (d) => (d.children ? r : r))
+          .attr("class", (d) => (d.children ? "internal_node" : "leaf_node"));
+        /*
+				/*
+				ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+				*/
+        // add the label to the node (Task 2)
+
+        node
+          .filter((d) => d.depth === 0 || d.children) // Select root and internal nodes
+          .append("text")
+          .attr("class", "label")
+          .attr("x", 0) // Center the text horizontally
+          .attr("y", r + 15) // Position the text below the node
+          .attr("text-anchor", "middle") // Center align the text
+          .text((d) => d.data.name); // Use the name property for the root and internal nodes
+
+        node
+          .filter((d) => !d.children) // Select only leaf nodes
+          .append("text")
+          .attr("class", "label")
+          .attr("x", -r - 10) // Move the text to the left of the node
+          .attr("y", 4) // Vertically center the text relative to the node
+          .attr("text-anchor", "end") // Align the text to the right (to keep it left of the node)
+          .text((d) => d.data.clue_small_area); // Use the clue_small_area property for the suburb names
+
+        //// #region:  the path of the development data
+        const dataPath =
+          "https://gist.githubusercontent.com/sgeoviz/0f20f01b4e01d85d4938fbbbde2827c4/raw/d3264569c9201b7f9f1899b4cc41fee3e34c3371/PE3_development_data.csv";
+        // #endregion
+
+        /*
+				ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+				*/
+        // read the development data from the path  (Needed for all tasks)
+        d3.csv(dataPath).then((data) => {
+          /*
+					ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+					*/
+          // keep a reference to the development data in dataPointer variable
+          dataPointer = data;
+
+          // fixing missing data in the year and suburb data
+          const allYears = d3.range(2014, 2024); // [2014, 2015, ..., 2023]
+
+          const uniquePairs = Array.from(
+            new Set(
+              dataPointer.map((d) => `${d.clue_small_area}-${d.floor_type}`)
+            )
+          );
+
+          uniquePairs.forEach((pair) => {
+            const [area, floorType] = pair.split("-");
+
+            allYears.forEach((year) => {
+              const existingEntry = dataPointer.find(
+                (d) =>
+                  d.clue_small_area === area &&
+                  d.floor_type === floorType &&
+                  +d.year_completed === year
+              );
+
+              // If the entry doesn't exist, add a new one with area = 0
+              if (!existingEntry) {
+                dataPointer.push({
+                  clue_small_area: area,
+                  floor_type: floorType,
+                  year_completed: year.toString(),
+                  area: 0,
+                });
+              }
+            });
+          });
+
+          /*
+					ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+					*/
+          // get the data range of the development data (Task 4)
+          const areaRange = d3.extent(dataPointer, (d) => +d.area);
+
+          /*
+					ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+					*/
+          // map the data value domain to a scale range (Task 4)
+          const colorScale = d3
+            .scaleSequential()
+            .domain(areaRange)
+            .interpolator(d3.interpolateReds);
+
+          /*
+					ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+					*/
+          // Draw the colour legend (Task 4)
+          // You can use legend() function, which gets an object with the parameters. Some trial values are below.
+          //     color,
+          //     title,
+          //     tickSize,
+          //     width = 400,
+          //     marginTop = 18,
+          //     marginLeft = 0,
+          //     tickFormat,
+          //     tickValues
+          // The colour scheme and scale must be suitable for the data and to identify the patterns described in the text.
+          // Any part of the code below could be wrong, you must modify it and make sure it is correct for your design.
+
+          legend({
+            color: colorScale,
+            title: "Total Development Area (m²)",
+            ticks: 5,
+            width: 400,
+            marginTop: 18,
+            marginLeft: 10,
+            tickFormat: ".0s",
+          });
+
+          /*
+					ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+					*/
+          // map the value scale to a colour scale using your chosen colour palette (Task 4)
+
+          // add the timeline bars to the leaf nodes (Task 3)
+          node
+            .filter((d) => !d.children) // Select only leaf nodes
+            .append("g")
+            .attr("class", "timeline-bars")
+            .each(function (d) {
+              // Find the corresponding data for the current node (based on the area)
+              const nodeData = dataPointer.filter(
+                (entry) =>
+                  entry.clue_small_area === d.data.clue_small_area &&
+                  entry.floor_type === d.parent.data.name
+              );
+
+              // Append a bar for each year's data in the nodeData
+              d3.select(this)
+                .selectAll("rect")
+                .data(nodeData)
+                .enter()
+                .append("rect")
+                .attr(
+                  "x",
+                  (entry) => timelineScale(entry.year_completed) - interval / 2
+                )
+                .attr("y", (entry) => entry.y)
+                .attr("width", interval / 2 + 3)
+                .attr("height", 7)
+                .attr("fill", (entry) => colorScale(entry.area))
+                .attr("stroke-width", 1)
+                .on("mouseover", function (event, entry) {
+                  // Tooltip functionality for timeline bars
+                  const formattedArea = d3.format(",")(entry.area);
+
+                  d3.select("#tooltip-text").html(
+                    `Year: ${entry.year_completed} <br/> Suburb: ${entry.clue_small_area} <br/> Floor Space Type: ${entry.floor_type} <br/> Total Area: ${formattedArea} m²`
+                  );
+                  d3.select("#tooltip-container").style("display", "block");
+
+                  // Getting the rest of the not selected rect and make it transparent
+                  d3.selectAll("rect")
+                    .filter(function () {
+                      return this !== event.target; // Filter to exclude the hovered element (this)
+                    })
+                    .classed("timeline-bar-transparent", true);
+
+                  // Highlighted rect
+                  d3.select(this)
+                    .classed("timeline-bar-highlighted", true)
+                    .attr("stroke", colorScale(entry.area));
+                })
+                .on("mousemove", function (event) {
+                  // Dynamically adjust the tooltip position based on the screen
+                  const tooltipWidth = d3
+                    .select("#tooltip-container")
+                    .node().offsetWidth;
+                  const tooltipHeight = d3
+                    .select("#tooltip-container")
+                    .node().offsetHeight;
+                  const xPosition = event.pageX - 20;
+                  const yPosition = event.pageY - tooltipHeight - 10;
+
+                  const adjustedXPosition =
+                    xPosition + tooltipWidth > window.innerWidth
+                      ? window.innerWidth - tooltipWidth - 10
+                      : xPosition;
+                  const adjustedYPosition =
+                    yPosition < 0 ? event.pageY + 10 : yPosition;
+
+                  d3.select("#tooltip-container")
+                    .style("left", adjustedXPosition + "px")
+                    .style("top", adjustedYPosition + "px");
+                })
+                .on("mouseout", function () {
+                  // Hide the tooltip
+                  d3.select("#tooltip-container").style("display", "none");
+
+                  // Return everything back to normal
+                  d3.selectAll("rect") // Select all rects
+                    .filter(function () {
+                      return this !== event.target; // Filter to exclude the hovered element (this)
+                    })
+                    .classed("timeline-bar-transparent", false);
+
+                  // Remove the highlight class to reset the stroke
+                  d3.select(this).classed("timeline-bar-highlighted", false);
+                });
+            });
+
+          /*
+					ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+					*/
+          // change the line of code below to colour the line segments based on the data (Task 4)
+          // use the colour scale you defined above to do this
+
+          /*
+					ADD YOUR CODE HERE FOLLOWING THE INSTRUCTION
+					*/
+          // Hover the mouse on the timeline bars to show the data information in a tooltip (Task 5)
+          // Highlight the timeline bar with wider thickness when mouse hovers (Task 6)
+          // You can again use the css rules of tooltip and highlighting defined in the style sheet above
+
+          // Add tooltip functionality
+          node
+            .select("circle")
+            .on("mouseover", function (event, d) {
+              d3.select(this).classed("node-highlighted", true);
+
+              let current = d;
+              while (current.parent) {
+                d3.selectAll(".link")
+                  .filter(function (l) {
+                    return l === current;
+                  })
+                  .classed("link-highlighted", true);
+                current = current.parent;
+              }
+
+              let tooltipText = "";
+              if (!d.children) {
+                const suburb = d.data.clue_small_area;
+                const suburbData = dataPointer.filter(
+                  (row) =>
+                    row.clue_small_area === suburb &&
+                    row.floor_type === d.parent.data.name
+                );
+                const totalDevelopments = d3.sum(
+                  suburbData,
+                  (row) => row.completed_developments
+                );
+                tooltipText = `Suburb: ${suburb}<br/>Total Number of Developments: ${totalDevelopments}`;
+              } else {
+                tooltipText = `Number of Childs: ${d.children.length}`;
+              }
+
+              d3.select("#tooltip-container").style("display", "block");
+
+              d3.select("#tooltip-text").html(tooltipText);
+            })
+            .on("mousemove", function (event) {
+              // Dynamically position the tooltip based on window dimensions
+              const tooltipWidth = d3
+                .select("#tooltip-container")
+                .node().offsetWidth;
+              const tooltipHeight = d3
+                .select("#tooltip-container")
+                .node().offsetHeight;
+              const xPosition = event.pageX + 10;
+              const yPosition = event.pageY - tooltipHeight - 10;
+
+              const adjustedXPosition =
+                xPosition + tooltipWidth > window.innerWidth
+                  ? window.innerWidth - tooltipWidth - 10
+                  : xPosition;
+              const adjustedYPosition =
+                yPosition < 0 ? event.pageY + 10 : yPosition;
+
+              d3.select("#tooltip-container")
+                .style("left", adjustedXPosition + "px")
+                .style("top", adjustedYPosition + "px");
+            })
+            .on("mouseout", function (event, d) {
+              d3.select(this).classed("node-highlighted", false);
+
+              let current = d;
+              while (current.parent) {
+                d3.selectAll(".link")
+                  .filter(function (l) {
+                    return l === current;
+                  })
+                  .classed("link-highlighted", false);
+                current = current.parent;
+              }
+
+              d3.select("#tooltip-container").style("display", "none");
+            });
+        });
+      </script>
+    </div>
+  </body>
+</html>

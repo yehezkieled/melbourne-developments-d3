@@ -1,0 +1,44 @@
+{
+  "name": "Development",
+  "children": [
+    {
+      "name": "Retail",
+      "children": [
+        {"clue_small_area": "Carlton"},
+        {"clue_small_area": "Docklands"},
+        {"clue_small_area": "East Melbourne"},
+        {"clue_small_area": "Kensington"},
+        {"clue_small_area": "Melbourne (CBD)"},
+        {"clue_small_area": "North Melbourne"},
+        {"clue_small_area": "Parkville"},
+        {"clue_small_area": "Port Melbourne"},
+        {"clue_small_area": "Southbank"},
+        {"clue_small_area": "West Melbourne"}
+      ]},
+    {
+      "name": "Office",
+      "children": [
+        {"clue_small_area": "Carlton"},
+        {"clue_small_area": "Docklands"},
+        {"clue_small_area": "East Melbourne"},
+        {"clue_small_area": "Kensington"},
+        {"clue_small_area": "Melbourne (CBD)"},
+        {"clue_small_area": "North Melbourne"},
+        {"clue_small_area": "Parkville"},
+        {"clue_small_area": "Port Melbourne"},
+        {"clue_small_area": "Southbank"},
+        {"clue_small_area": "West Melbourne"}
+      ]},
+    {
+      "name": "Education",
+      "children": [
+        {"clue_small_area": "Carlton"},
+        {"clue_small_area": "Docklands"},
+        {"clue_small_area": "Melbourne (CBD)"},
+        {"clue_small_area": "North Melbourne"},
+        {"clue_small_area": "Parkville"},
+        {"clue_small_area": "Southbank"},
+        {"clue_small_area": "West Melbourne"}
+      ]}
+  ]
+}

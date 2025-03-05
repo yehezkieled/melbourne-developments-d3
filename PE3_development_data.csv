@@ -1,0 +1,229 @@
+clue_small_area,year_completed,completed_developments,floor_type,area
+Carlton,2014,3,Office,0
+Carlton,2015,1,Office,0
+Carlton,2017,3,Office,0
+Carlton,2018,2,Office,0
+Carlton,2019,3,Office,0
+Carlton,2020,1,Office,0
+Carlton,2021,3,Office,0
+Carlton,2022,3,Office,62
+Docklands,2014,5,Office,86114
+Docklands,2015,5,Office,75791
+Docklands,2016,3,Office,4149
+Docklands,2017,6,Office,69274
+Docklands,2018,5,Office,67365
+Docklands,2019,3,Office,40591
+Docklands,2020,4,Office,110044
+Docklands,2021,2,Office,32934
+Docklands,2022,4,Office,32140
+Docklands,2023,1,Office,0
+East Melbourne,2019,1,Office,1087
+East Melbourne,2022,1,Office,2973
+East Melbourne,2023,1,Office,25188
+Kensington,2014,2,Office,237
+Kensington,2018,1,Office,0
+Kensington,2021,1,Office,0
+Kensington,2022,1,Office,0
+Kensington,2023,2,Office,5839
+Melbourne (CBD),2014,7,Office,24916
+Melbourne (CBD),2015,8,Office,72810
+Melbourne (CBD),2016,7,Office,0
+Melbourne (CBD),2017,12,Office,10130
+Melbourne (CBD),2018,3,Office,0
+Melbourne (CBD),2019,8,Office,18732
+Melbourne (CBD),2020,12,Office,235934
+Melbourne (CBD),2021,12,Office,76567
+Melbourne (CBD),2022,8,Office,28982
+Melbourne (CBD),2023,11,Office,87781
+North Melbourne,2014,1,Office,0
+North Melbourne,2016,4,Office,1108
+North Melbourne,2018,2,Office,7314
+North Melbourne,2019,6,Office,653
+North Melbourne,2020,1,Office,0
+North Melbourne,2021,1,Office,766
+North Melbourne,2022,2,Office,3666
+North Melbourne,2023,3,Office,15513
+Parkville,2014,1,Office,0
+Parkville,2015,2,Office,0
+Parkville,2017,2,Office,0
+Parkville,2018,1,Office,0
+Parkville,2021,2,Office,1455
+Port Melbourne,2014,1,Office,1196
+Port Melbourne,2015,3,Office,2342
+Port Melbourne,2016,2,Office,270
+Port Melbourne,2017,1,Office,775
+Port Melbourne,2019,1,Office,3160
+Port Melbourne,2020,1,Office,430
+Port Melbourne,2021,2,Office,1631
+Port Melbourne,2022,1,Office,365
+Southbank,2015,2,Office,811
+Southbank,2016,1,Office,156
+Southbank,2017,3,Office,50262
+Southbank,2018,3,Office,0
+Southbank,2019,4,Office,4426
+Southbank,2020,5,Office,2582
+Southbank,2021,1,Office,0
+Southbank,2022,2,Office,422
+Southbank,2023,1,Office,2366
+West Melbourne,2014,1,Office,0
+West Melbourne,2015,2,Office,858
+West Melbourne,2016,2,Office,275
+West Melbourne,2017,4,Office,2696
+West Melbourne,2018,3,Office,0
+West Melbourne,2019,2,Office,922
+West Melbourne,2020,2,Office,2038
+West Melbourne,2021,6,Office,3099
+West Melbourne,2022,3,Office,0
+West Melbourne,2023,5,Office,3595
+Carlton,2014,3,Retail,1684
+Carlton,2015,1,Retail,372
+Carlton,2017,3,Retail,946
+Carlton,2018,2,Retail,560
+Carlton,2019,3,Retail,2810
+Carlton,2020,1,Retail,262
+Carlton,2021,3,Retail,250
+Carlton,2022,3,Retail,1142
+Docklands,2014,5,Retail,5073
+Docklands,2015,5,Retail,2842
+Docklands,2016,3,Retail,2176
+Docklands,2017,6,Retail,8597
+Docklands,2018,5,Retail,4368
+Docklands,2019,3,Retail,10783
+Docklands,2020,4,Retail,1572
+Docklands,2021,2,Retail,3710
+Docklands,2022,4,Retail,1186
+Docklands,2023,1,Retail,646
+East Melbourne,2019,1,Retail,0
+East Melbourne,2022,1,Retail,0
+East Melbourne,2023,1,Retail,1128
+Kensington,2014,2,Retail,0
+Kensington,2018,1,Retail,458
+Kensington,2021,1,Retail,1056
+Kensington,2022,1,Retail,335
+Kensington,2023,2,Retail,135
+Melbourne (CBD),2014,7,Retail,44439
+Melbourne (CBD),2015,8,Retail,4865
+Melbourne (CBD),2016,7,Retail,11385
+Melbourne (CBD),2017,12,Retail,10047
+Melbourne (CBD),2018,3,Retail,1330
+Melbourne (CBD),2019,8,Retail,4160
+Melbourne (CBD),2020,12,Retail,9879
+Melbourne (CBD),2021,12,Retail,9421
+Melbourne (CBD),2022,8,Retail,2640
+Melbourne (CBD),2023,11,Retail,10624
+North Melbourne,2014,1,Retail,140
+North Melbourne,2016,4,Retail,444
+North Melbourne,2018,2,Retail,263
+North Melbourne,2019,6,Retail,6994
+North Melbourne,2020,1,Retail,245
+North Melbourne,2021,1,Retail,4461
+North Melbourne,2022,2,Retail,0
+North Melbourne,2023,3,Retail,1907
+Parkville,2014,1,Retail,0
+Parkville,2015,2,Retail,190
+Parkville,2017,2,Retail,0
+Parkville,2018,1,Retail,0
+Parkville,2021,2,Retail,203
+Port Melbourne,2014,1,Retail,0
+Port Melbourne,2015,3,Retail,415
+Port Melbourne,2016,2,Retail,240
+Port Melbourne,2017,1,Retail,0
+Port Melbourne,2019,1,Retail,0
+Port Melbourne,2020,1,Retail,0
+Port Melbourne,2021,2,Retail,409
+Port Melbourne,2022,1,Retail,0
+Southbank,2015,2,Retail,1635
+Southbank,2016,1,Retail,247
+Southbank,2017,3,Retail,291
+Southbank,2018,3,Retail,516
+Southbank,2019,4,Retail,801
+Southbank,2020,5,Retail,8956
+Southbank,2021,1,Retail,149
+Southbank,2022,2,Retail,1049
+Southbank,2023,1,Retail,153
+West Melbourne,2014,1,Retail,1000
+West Melbourne,2015,2,Retail,0
+West Melbourne,2016,2,Retail,61
+West Melbourne,2017,4,Retail,448
+West Melbourne,2018,3,Retail,620
+West Melbourne,2019,2,Retail,1221
+West Melbourne,2020,2,Retail,348
+West Melbourne,2021,6,Retail,4771
+West Melbourne,2022,3,Retail,2931
+West Melbourne,2023,5,Retail,1518
+Carlton,2014,3,Education,0
+Carlton,2015,1,Education,0
+Carlton,2017,3,Education,0
+Carlton,2018,2,Education,0
+Carlton,2019,3,Education,0
+Carlton,2020,1,Education,0
+Carlton,2021,3,Education,43748
+Carlton,2022,3,Education,0
+Docklands,2014,5,Education,0
+Docklands,2015,5,Education,0
+Docklands,2016,3,Education,0
+Docklands,2017,6,Education,0
+Docklands,2018,5,Education,0
+Docklands,2019,3,Education,0
+Docklands,2020,4,Education,3400
+Docklands,2021,2,Education,38500
+Docklands,2022,4,Education,370
+Docklands,2023,1,Education,0
+East Melbourne,2019,1,Education,0
+East Melbourne,2022,1,Education,0
+East Melbourne,2023,1,Education,0
+Kensington,2014,2,Education,0
+Kensington,2018,1,Education,0
+Kensington,2021,1,Education,0
+Kensington,2022,1,Education,0
+Kensington,2023,2,Education,0
+Melbourne (CBD),2014,7,Education,9000
+Melbourne (CBD),2015,8,Education,0
+Melbourne (CBD),2016,7,Education,0
+Melbourne (CBD),2017,12,Education,0
+Melbourne (CBD),2018,3,Education,0
+Melbourne (CBD),2019,8,Education,0
+Melbourne (CBD),2020,12,Education,0
+Melbourne (CBD),2021,12,Education,0
+Melbourne (CBD),2022,8,Education,13800
+Melbourne (CBD),2023,11,Education,0
+North Melbourne,2014,1,Education,0
+North Melbourne,2016,4,Education,0
+North Melbourne,2018,2,Education,2491
+North Melbourne,2019,6,Education,0
+North Melbourne,2020,1,Education,0
+North Melbourne,2021,1,Education,8688
+North Melbourne,2022,2,Education,1557
+North Melbourne,2023,3,Education,20445
+Parkville,2014,1,Education,17488
+Parkville,2015,2,Education,25000
+Parkville,2017,2,Education,6345
+Parkville,2018,1,Education,3930
+Parkville,2021,2,Education,0
+Port Melbourne,2014,1,Education,0
+Port Melbourne,2015,3,Education,0
+Port Melbourne,2016,2,Education,0
+Port Melbourne,2017,1,Education,0
+Port Melbourne,2019,1,Education,0
+Port Melbourne,2020,1,Education,0
+Port Melbourne,2021,2,Education,0
+Port Melbourne,2022,1,Education,0
+Southbank,2015,2,Education,0
+Southbank,2016,1,Education,0
+Southbank,2017,3,Education,0
+Southbank,2018,3,Education,3910
+Southbank,2019,4,Education,7979
+Southbank,2020,5,Education,0
+Southbank,2021,1,Education,0
+Southbank,2022,2,Education,0
+Southbank,2023,1,Education,0
+West Melbourne,2014,1,Education,0
+West Melbourne,2015,2,Education,0
+West Melbourne,2016,2,Education,0
+West Melbourne,2017,4,Education,12500
+West Melbourne,2018,3,Education,0
+West Melbourne,2019,2,Education,0
+West Melbourne,2020,2,Education,0
+West Melbourne,2021,6,Education,0
+West Melbourne,2022,3,Education,0
+West Melbourne,2023,5,Education,0
